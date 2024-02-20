@@ -24,6 +24,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,24 +56,33 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitConverter(){
+    var inputValue by remember { mutableStateOf("") }
+    var outputVaalue by remember { mutableStateOf("") }
+var inputUnit by remember { mutableStateOf("Centimetres") }
+var outputUnit by remember { mutableStateOf("Metres") }
+    var iExpanded by remember { mutableStateOf(false) }
+var oExpanded by remember { mutableStateOf(false) }
+val conversionFactor = remember { mutableStateOf(0.01) }
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     , horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Unit Converter",)
         Spacer(modifier= Modifier.height(16.dp))
-        OutlinedTextField(value = "Enter Value", onValueChange = {} )
+        OutlinedTextField(value = inputValue, onValueChange = {
+            inputValue = it
+        } ,
+            label = { Text("Enter value")})
         Spacer(modifier= Modifier.height(16.dp))
         Row {
         Box {
-            Button(onClick = {}) {
+            Button(onClick = {iExpanded = true}) {
                 Text(text = "Select")
          Icon(Icons.Default.ArrowDropDown,
         contentDescription = "Click me")
                 
             }
-            DropdownMenu(expanded =false ,
-                onDismissRequest = { }) {
-                DropdownMenu(expanded = false,
+
+                DropdownMenu(expanded = iExpanded,
                     onDismissRequest = { /*TODO*/ }) {
                     DropdownMenuItem(text = { Text(text = "Centimetres")},
                         onClick = { /*TODO*/ })
@@ -111,9 +124,9 @@ fun UnitConverter(){
         Spacer(modifier= Modifier.height(16.dp))
         Text(text = "Result:")
     }
-}
 
-@Preview(showBackground = true)
+}
+@Preview (showBackground = true)
 @Composable
 fun UnitConverterPreview(){
     UnitConverter()
